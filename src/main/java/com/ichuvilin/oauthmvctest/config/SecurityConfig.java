@@ -25,8 +25,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/error", "/webjars/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .oauth2Login(Customizer.withDefaults())
-                .logout(l -> l.logoutSuccessUrl("/").permitAll());
+                .oauth2Login(Customizer.withDefaults());
         return http.build();
     }
 }
