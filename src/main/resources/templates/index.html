@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authentication Example</title>
+</head>
+<body>
+<div th:if="${isAuthenticated}">
+    <!-- Если пользователь аутентифицирован -->
+    <p>Logged in as: <span th:text="${username}"></span></p>
+    <p>go to swagger -> <a href="/swagger-ui/index.html">swagger</a></p>
+</div>
+<div th:unless="${isAuthenticated}">
+    <!-- Если пользователь не аутентифицирован -->
+    <p>With Gitlab: <a href="/oauth2/authorization/gitlab">click here</a></p>
+</div>
+</body>
+</html>
