@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,7 +22,7 @@ import java.util.Optional;
 @RequestMapping
 @RequiredArgsConstructor
 public class GitLabController {
-    public static final String URL = "https://gitlab.com/api/v4/users/%s/events?access_token=%s";
+    public static final String URL = "https://gitlab.com/api/v4/users/%s/events?per_page=50&page=%s&access_token=%s";
     private final RestTemplate restTemplate;
     private final OAuth2AuthorizedClientService authorizedClientService;
 
@@ -28,12 +30,20 @@ public class GitLabController {
     public String gitlabStatistic(@RequestParam(required = false) String user) {
         var dataForProcessing = getDataForProcessing(user);
 
-        var forEntity = restTemplate
-                .getForEntity(URL.formatted(dataForProcessing.get("username"), dataForProcessing.get("token")), GitlabEvent[].class);
+        List<GitlabEvent> events = new LinkedList<>();
+        int page = 1;
 
-        Arrays.stream(forEntity.getBody()).forEach(
-                event -> log.info("{}", event)
-        );
+        while (true) {
+            var forEntity = restTemplate
+                    .getForEntity(URL.formatted(dataForProcessing.get("username"), page, dataForProcessing.get("token")), GitlabEvent[].class);
+            if (forEntity.getBody() != null && forEntity.getBody().length == 0) {
+                break;
+            }
+            events.addAll(Arrays.asList(forEntity.getBody()));
+            page += 1;
+        }
+
+        log.info("list size: {}", events.size());
 
         return "gitlab-statistic";
     }

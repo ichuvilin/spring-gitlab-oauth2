@@ -22,7 +22,7 @@ public class SecurityConfig {
         http
                 .csrf(c -> c.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**", "/error", "/webjars/**").permitAll()
+                        .requestMatchers("/", "/error", "/webjars/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .oauth2Login(Customizer.withDefaults());
