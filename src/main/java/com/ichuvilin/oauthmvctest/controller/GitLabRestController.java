@@ -21,13 +21,13 @@ import java.util.Optional;
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
-public class GitLabController {
+public class GitLabRestController {
     public static final String URL = "https://gitlab.com/api/v4/users/%s/events?per_page=50&page=%s&access_token=%s";
     private final RestTemplate restTemplate;
     private final OAuth2AuthorizedClientService authorizedClientService;
 
     @GetMapping("/gitlab-statistic")
-    public String gitlabStatistic(@RequestParam(required = false) String user) {
+    public List<GitlabEvent> gitlabStatistic(@RequestParam(required = false) String user) {
         var dataForProcessing = getDataForProcessing(user);
 
         List<GitlabEvent> events = new LinkedList<>();
@@ -45,7 +45,7 @@ public class GitLabController {
 
         log.info("list size: {}", events.size());
 
-        return "gitlab-statistic";
+        return events;
     }
 
 
