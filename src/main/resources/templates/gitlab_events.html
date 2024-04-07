@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitLab API</title>
+</head>
+<body>
+<h1>Список контрибьютов</h1>
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Название</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-th-each="event : ${events}">
+        <td data-th-text="${event.id}"></td>
+        <td>
+            <p th:text="${event.getTargetTitle()}"></p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p th:text="${events}"></p>
+
+</body>
+</html>

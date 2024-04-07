@@ -1,29 +1,23 @@
 package com.ichuvilin.oauthmvctest.controller;
 
-import com.ichuvilin.oauthmvctest.dto.GitlabEvent;
 import com.ichuvilin.oauthmvctest.service.GitLabService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@Slf4j
-@RestController
-@RequestMapping
+@Controller
+@RequestMapping("gitlab")
 @RequiredArgsConstructor
-public class GitLabRestController {
+public class GitLabController {
     private final GitLabService gitLabService;
 
-    @GetMapping("/gitlab-statistic")
-    public List<GitlabEvent> gitlabStatistic(@RequestParam(required = false) String user) {
+    @GetMapping("stats")
+    public String getStats(@RequestParam(name = "user", required = false) String user, Model model) {
         var gitlabEvents = gitLabService.getGitlabEvents(user);
-
-        log.info("list size: {}", gitlabEvents.size());
-
-        return gitlabEvents;
+        model.addAttribute("events", gitlabEvents);
+        return "gitlab_events";
     }
 }

@@ -9,6 +9,7 @@
     <!-- Если пользователь аутентифицирован -->
     <p>Logged in as: <span th:text="${name}"></span></p>
     <p>Go to swagger &rarr; <a href="/swagger-ui/index.html">swagger</a></p>
+    <p>UI for events &rarr; <a href="/gitlab/stats">ui</a></p>
 </div>
 <div th:unless="${isAuthenticated}">
     <!-- Если пользователь не аутентифицирован -->
